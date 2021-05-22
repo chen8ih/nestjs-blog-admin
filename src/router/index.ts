@@ -1,8 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-// import { constantRoutes } from './routes'
 
-import { Meta } from '@/@types'
-import { store } from '@/store'
+// import { Meta } from '@/@types'
+// import { store } from '@/store'
 // 自动加载模块中的路由模块
 const routesModules = import.meta.globEager('./modules/*.ts')
 
@@ -14,6 +13,14 @@ export const customRoutes = Object.keys(routesModules).reduce<RouteRecordRaw[]>(
 const whiteUrls = ['/login', '/404']
 
 export const constantRoutes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/home/index.vue'),
+    meta: {
+      title: 'home'
+    }
+  },
   {
     path: '/404',
     name: '404',
@@ -28,6 +35,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/login/index.vue'),
     meta: {
       title: '登陆'
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/login/register.vue'),
+    meta: {
+      title: '注册'
     }
   },
   ...customRoutes
@@ -45,24 +60,24 @@ const _createRouter = () => createRouter({
 
 let router = _createRouter()
 
-router.beforeEach((to, from, next) => {
-  if (!to.matched.length) {
-    router.push({
-      path: '/404'
-    })
-  } else {
-    if (!whiteUrls.some(item => item === to.path)) {
-      if (store.getters.userToken) {
-        // 设置相关信息
-      }
-    } else {
-      router.push({
-        path: '/login'
-      })
-    }
-  }
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   if (!to.matched.length) {
+//     router.push({
+//       path: '/404'
+//     })
+//   } else {
+//     if (!whiteUrls.some(item => item === to.path)) {
+//       if (store.getters.userToken) {
+//         // 设置相关信息
+//       }
+//     } else {
+//       router.push({
+//         path: '/login'
+//       })
+//     }
+//   }
+//   next()
+// })
 
 export function resetRouter() {
   router = _createRouter()
