@@ -13,7 +13,10 @@
 // password: "e10adc3949ba59abbe56e057f20f883e"
 // sex: nul
 export type UserData = {
+  id: number
   name: string
-  age: number
-  role: string
+  nickName: string
+  mail: string
+  sex: string
+  headImg: string
 }

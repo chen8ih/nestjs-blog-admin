@@ -29,18 +29,18 @@
           </div>
           <div class="blog-add-form__item">
             <h2>文章内容*</h2>
-            <v-md-editor v-model="blogForm.blogContent" height="400px"></v-md-editor>
+            <v-md-editor v-model="blogForm.body" height="400px"></v-md-editor>
           </div>
         </div>
       </div>
     </div>
-    新增博客
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { FindBlogClass } from '@/apis/blog'
+import { FindBlogClass, addBlog } from '@/apis/blog'
 import { ElMessage } from 'element-plus'
+import router from '@/router'
 export default defineComponent({
   name: 'BlogAdd',
   setup() {
@@ -49,9 +49,14 @@ export default defineComponent({
     })
 
     const blogForm = reactive({
-      title: '',
+      bgImg: '',
+      body: '',
       className: '',
-      blogContent: ''
+      isTop: 0,
+      name: '',
+      showIndex: 1,
+      title: '',
+      upFileUrl: ''
     })
 
     FindBlogClass().then(res => {
@@ -65,9 +70,35 @@ export default defineComponent({
       }
     })
 
-    const onScrolltop = () => {}
-    const onReset = () => {}
-    const onDeploy = () => {}
+    const onScrolltop = () => {
+
+    }
+
+    const onReset = () => {
+      blogForm.title = ''
+      blogForm.className = ''
+      blogForm.bgImg = ''
+      blogForm.upFileUrl = ''
+      blogForm.body = ''
+    }
+    const onDeploy = () => {
+      addBlog(blogForm).then(res => {
+        if (res.data.success) {
+          ElMessage({
+            type: 'success',
+            message: '文章发布成功'
+          })
+          setTimeout(() => {
+            router.push('/blog/list')
+          }, 1500)
+        } else {
+          ElMessage({
+            type: 'error',
+            message: res.data.errorMsg
+          })
+        }
+      })
+    }
 
     return {
       state,

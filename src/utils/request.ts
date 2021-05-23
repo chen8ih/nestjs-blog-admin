@@ -16,7 +16,7 @@ const pendingRequest = new Map()
 
 const instance: AxiosInstance = Axios.create({
   baseURL: import.meta.env.VITE_API_URL as string,
-  timeout: 10000,
+  timeout: 10000
 })
 
 const generateReqKey = (config: AxiosRequestConfig) => {
@@ -52,9 +52,11 @@ instance.interceptors.request.use(
   async (config: AxiosRequestConfig) => {
     removePendingRequest(config) // 检查是否存在重复请求，若存在则取消已发的请求
     addPendingRequest(config) // 把当前请求信息添加到pendingRequest对象中
-    if (store.getters.userToken) {
+    const token = store.getters.userToken
+    console.log(token)
+    if (token) {
       config.headers = {
-        Authorization: 'Bearer ' + store.getters.userToken
+        Authorization: 'Bearer ' + token
       }
     }
     return config

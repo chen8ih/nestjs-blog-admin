@@ -6,9 +6,12 @@ export type State = {
 }
 
 const defaultUserData = {
-  name: 'chenh',
-  age: 20,
-  role: 'admin'
+  id: 0,
+  name: '',
+  nickName: '',
+  mail: '',
+  sex: '',
+  headImg: ''
 }
 
 export const state: State = {

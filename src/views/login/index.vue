@@ -73,33 +73,12 @@ export default defineComponent({
           loading.value = true
           // 向后端发起认证请求
           loginForm.password = md5(loginForm.password)
-          console.log(loginForm)
-          // data: "登录成功"
-          // success: true
-          // userInfo: {id: 2, name: "test111", password: "e10adc3949ba59abbe56e057f20f883e",…}
-          // accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdDExMSIsInBhc3N3b3JkIjoiZTEwYWRjMzk0OWJhNTlhYmJlNTZlMDU3ZjIwZjg4M2UiLCJpYXQiOjE2MjE2OTM1MzMsImV4cCI6MTYyNDI4NTUzM30.Mk8dkruR_PCStIN_UPOGgd7pdeaasQx7agCD5qcCa-c"
-          // auth: "0"
-          // code: ""
-          // codeTime: "2021-05-22T14:24:19.000Z"
-          // creatTime: "2021-05-22T14:24:19.000Z"
-          // headImg: "http://www.dlhtx.top:3000/file/randomAvatar"
-          // id: 2
-          // info: null
-          // mail: "star369_963@163.com"
-          // name: "test111"
-          // nickName: null
-          // num: null
-          // password: "e10adc3949ba59abbe56e057f20f883e"
-          // sex: null
           Login(loginForm).then(res => {
+            console.log(res)
             if (res.data.success) {
-              const userInfo = res.data.userInfo
-              store.commit(UserMutationTypes.SET_USER, {
-                name: userInfo.name,
-                age: '',
-                role: ''
-              })
-              store.commit(UserMutationTypes.SET_TOKEN, '')
+              store.commit(UserMutationTypes.SET_USER, res.data.userInfo)
+              console.log(res.data.userInfo.accessToken)
+              store.commit(UserMutationTypes.SET_TOKEN, res.data.userInfo.accessToken)
               router.push({
                 path: '/home',
               })
