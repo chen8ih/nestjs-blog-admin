@@ -2,6 +2,7 @@ import Axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse,  AxiosError, A
 import { ElMessage, ElMessageBox } from 'element-plus'
 import qs from 'qs'
 import router from '@/router'
+import { store } from '@/store'
 
 function networkErrorMessage (e: AxiosError) {
   console.error(e)
@@ -51,6 +52,11 @@ instance.interceptors.request.use(
   async (config: AxiosRequestConfig) => {
     removePendingRequest(config) // 检查是否存在重复请求，若存在则取消已发的请求
     addPendingRequest(config) // 把当前请求信息添加到pendingRequest对象中
+    if (store.getters.userToken) {
+      config.headers = {
+        Authorization: 'Bearer ' + store.getters.userToken
+      }
+    }
     return config
   }, (error: AxiosError) => {
     console.log(error)

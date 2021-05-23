@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 // import { Meta } from '@/@types'
 // import { store } from '@/store'
+import Layout from '@/layouts/Main.vue'
+
 // 自动加载模块中的路由模块
 const routesModules = import.meta.globEager('./modules/*.ts')
 
@@ -16,10 +18,12 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/home/index.vue'),
+    component: Layout,
+    redirect: '/home',
     meta: {
-      title: 'home'
-    }
+      title: '首页'
+    },
+    children: [...customRoutes]
   },
   {
     path: '/404',
@@ -44,13 +48,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     meta: {
       title: '注册'
     }
-  },
-  ...customRoutes
+  }
   // {
-  //   path: '/:pathMatch(.*)*',
+  //   path: '*',
   //   redirect: '/404'
   // }
 ]
+
+console.log(constantRoutes)
 
 const _createRouter = () => createRouter({
   history: createWebHashHistory(),

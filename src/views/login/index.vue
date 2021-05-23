@@ -93,8 +93,9 @@ export default defineComponent({
           // sex: null
           Login(loginForm).then(res => {
             if (res.data.success) {
+              const userInfo = res.data.userInfo
               store.commit(UserMutationTypes.SET_USER, {
-                name: '',
+                name: userInfo.name,
                 age: '',
                 role: ''
               })

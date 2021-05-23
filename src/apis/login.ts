@@ -54,3 +54,13 @@ export const GetCode = (data: codeParams) => {
     data
   })
 }
+
+/**
+ * 注销接口
+ */
+// export const Logout = (name: string) => {
+//   return http.post({
+//     url: '/api/user/login',
+//     name
+//   })
+// }
