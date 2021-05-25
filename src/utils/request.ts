@@ -5,7 +5,6 @@ import router from '@/router'
 import { store } from '@/store'
 
 function networkErrorMessage (e: AxiosError) {
-  console.error(e)
   ElMessage({
     type: 'error',
     message: '请求异常, 请稍后再试'
@@ -16,7 +15,8 @@ const pendingRequest = new Map()
 
 const instance: AxiosInstance = Axios.create({
   baseURL: import.meta.env.VITE_API_URL as string,
-  timeout: 10000
+  timeout: 10000,
+  withCredentials: true
 })
 
 const generateReqKey = (config: AxiosRequestConfig) => {
@@ -53,7 +53,6 @@ instance.interceptors.request.use(
     removePendingRequest(config) // 检查是否存在重复请求，若存在则取消已发的请求
     addPendingRequest(config) // 把当前请求信息添加到pendingRequest对象中
     const token = store.getters.userToken
-    console.log(token)
     if (token) {
       config.headers = {
         Authorization: 'Bearer ' + token
@@ -133,6 +132,22 @@ export default {
         method: 'get',
         url,
         params: data
+      }).then(res => {
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+  delete ({
+    url,
+    data = {}
+  }: RequestParams): AxiosPromise  {
+    return new Promise((resolve, reject) => {
+      instance({
+        method: 'delete',
+        url,
+        data
       }).then(res => {
         resolve(res)
       }).catch(err => {

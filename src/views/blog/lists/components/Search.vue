@@ -10,9 +10,9 @@
           <el-select v-model="listSearchForm.className" placeholder="请选择">
             <el-option
               v-for="opt in state.classOptions"
-              :key="opt.value"
-              :label="opt.label"
-              :value="opt.value">
+              :key="opt.id"
+              :label="opt.className"
+              :value="opt.className">
             </el-option>
           </el-select>
         </el-form-item>
